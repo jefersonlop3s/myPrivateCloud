@@ -1,7 +1,7 @@
 # myPrivateCloud
 Ideias para uma nuvem pessoal familiar para armazenamento de documentos, fotos, videos...
 
-## Hardwaresé 
+## Hardware
 - NAS Server Raspberry Pi 4
 - Morefine/Beelink - MiniPC
 
@@ -14,7 +14,7 @@ Ideias para uma nuvem pessoal familiar para armazenamento de documentos, fotos, 
 ### ProxMox VE
 - https://www.proxmox.com/en/proxmox-virtual-environment/overview 
 ### Kubernetes
-- 
+- https://kubernetes.io/
 
 ## Apps, Softwares and Docker Images
 ### OpenMediaVault: 
