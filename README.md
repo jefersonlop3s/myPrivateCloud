@@ -1,5 +1,5 @@
 # myPrivateCloud
-Ideias para uma nuvem pessoal familiar para armazenamento de documentos, fotos, videos...
+Ideias para uma nuvem pessoal familiar para armazenamento de documentos, fotos, videos e ambiente de estudos e desenvolvimento...
 
 ## Hardware
 - NAS Server Raspberry Pi 4
@@ -40,6 +40,10 @@ Ideias para uma nuvem pessoal familiar para armazenamento de documentos, fotos, 
 ### MariaDb: 
 - https://mariadb.org/
 - MariaDb: https://hub.docker.com/_/mariadb
+
+### Gitea
+- https://about.gitea.com/
+- Docker Image: https://hub.docker.com/r/gitea/gitea
 
 ### HomeAssitant: 
 - https://www.home-assistant.io/
