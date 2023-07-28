@@ -45,6 +45,10 @@ Ideias para uma nuvem pessoal familiar para armazenamento de documentos, fotos, 
 - https://about.gitea.com/
 - Docker Image: https://hub.docker.com/r/gitea/gitea
 
+### Mattermost
+- https://mattermost.com/
+- Docker Image: https://hub.docker.com/r/mattermost/mattermost-team-edition
+
 ### HomeAssitant: 
 - https://www.home-assistant.io/
 - Docker Image: https://hub.docker.com/r/homeassistant/home-assistant
