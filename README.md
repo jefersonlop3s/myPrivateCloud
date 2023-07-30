@@ -9,6 +9,7 @@ Ideias para uma nuvem pessoal familiar para armazenamento de documentos, fotos, 
 ### Linux KVM (VirtManager)
 ### VirtualBox
 ### Docker/Docker Desktop
+### Vagrant
 
 ## Infraestrutura/Plataforma para Produção
 ### ProxMox VE
@@ -23,6 +24,10 @@ Ideias para uma nuvem pessoal familiar para armazenamento de documentos, fotos, 
 ### NextCloud:
 - https://nextcloud.com/
 - Docker Image: https://hub.docker.com/_/nextcloud
+
+## DAVx5
+- https://www.davx5.com/
+
 
 ### Piwigo: 
 - https://piwigo.org/
