@@ -8,7 +8,7 @@ Para este momento, estou utilizando a versão 4.17.1 do code-server.
 1. Para todos os efeitos estou usando o domínio fictício `home.org`.
 
 ## Teste local 
-Use o Docker Engine/Deskto, Podman ou Containerd (nerdctl) para executar o code-server em um container local. Exemplo:
+Use o Docker Engine/Desktop, Podman ou Containerd (nerdctl) para executar o code-server em um container local. Exemplo:
 
 ```
 nerdctl run -d --name=code-server \
@@ -21,13 +21,13 @@ nerdctl run -d --name=code-server \
   linuxserver/code-server:4.17.1
 ``` 
 
-Se tudo ocorreu bem, você terá o code-server executando em um conteiner em seu desktop, você poderá acessar através da url https://127.0.0.1:8443.
+Se tudo ocorreu bem, você terá o code-server executando em um conteiner, em seu desktop você poderá acessar através da url https://127.0.0.1:8443 em seu navegador.
 
 ## Kubernetes Deploy
 
-Utilize os arquivos na sequencia para um deploy eficaz.
+Utilize os arquivos na sequência para um deploy eficaz.
 
-_E sim, eu sei.. eu poderia ter utilizado um unico manifesto e ok, está tudo bem._
+_E sim, eu sei.. eu poderia ter utilizado um único manifesto e ok, está tudo bem._
 
 ### 01-namespace.yaml
 Define o namespace
