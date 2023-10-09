@@ -7,19 +7,20 @@ Ideias para uma nuvem pessoal familiar para armazenamento de documentos, fotos, 
 
 ## Infraestrutura/Plataforma para Homologação
 ### Linux KVM (VirtManager)
-### VirtualBox
-### Docker/Docker Desktop
+### Docker/Podman/Containerd
 ### Vagrant
+- https://developer.hashicorp.com/vagrant
 
 ## Infraestrutura/Plataforma para Produção
-### ProxMox VE
-- https://www.proxmox.com/en/proxmox-virtual-environment/overview 
+### Linux KVM (VirtManager/QEmu/KubeVirt)
 ### Kubernetes
 - https://kubernetes.io/
 
 ## Apps, Softwares and Docker Images
 ### OpenMediaVault: 
 - https://www.openmediavault.org/
+### Code-server
+-  https://hub.docker.com/r/linuxserver/code-server 
 
 ### NextCloud:
 - https://nextcloud.com/
