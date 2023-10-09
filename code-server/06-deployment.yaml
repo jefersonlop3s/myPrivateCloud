@@ -1,0 +1,74 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: cs0
+  name: cs0
+  namespace: code
+spec:
+  selector:
+    matchLabels:
+      app: cs0
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: cs0
+    spec:
+      dnsPolicy: "None"
+      dnsConfig:
+        nameservers:
+          - 192.168.1.1 # Your LAN DNS
+          - 10.43.0.10 # Cluster DNS
+        searches:
+          - home.org # my fake domain
+      containers:
+      - name: cs0
+        image: linuxserver/code-server:4.17.1
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          privileged: false
+        env:
+          - name: PUID
+            value: "1000"
+          - name: PGID
+            value: "1000"
+          #- name: PASSWORD
+          #  valueFrom:
+          #    secretKeyRef:
+          #      name: cs-secret
+          #      key: cs0-passwd
+          - name: HASHED_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: cs-secret
+                key: cs0-hashed
+        resources:
+          requests:
+            memory: "512"
+            cpu: "0.25"
+          limits:
+            memory: "1024Mi"
+            cpu: "2"
+        ports:
+          - name: cs0
+            containerPort: 8443
+        volumeMounts:
+          - name: vol-cs0
+            mountPath: /config
+      volumes:
+        - name: vol-cs0
+          persistentVolumeClaim:
+            claimName: pvc-code-cs0
+      # This is optional or not necessary
+      affinity:
+          nodeAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+              - weight: 100
+                preference:
+                  matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: In
+                    values:
+                    - myAffinityNode # kubernetes node name
