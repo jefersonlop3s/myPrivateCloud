@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: cs0.home.org
+  namespace: code
+spec:
+  commonName: cs0.home.org
+  secretName: cs0.home.org
+  dnsNames:
+    - cs0.home.org
+  issuerRef:
+    name: selfsigned
+    kind: ClusterIssuer
