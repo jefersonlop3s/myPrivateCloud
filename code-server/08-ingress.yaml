@@ -1,0 +1,27 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: cs0-ingress
+  namespace: code
+  annotations:
+    # kubernetes.io/ingress.class: traefik # the annotation is deprecated
+    spec.ingressClassName: traefik
+    cert-manager.io/cluster-issuer: selfsigned
+    traefik.ingress.kubernetes.io/router.tls: "true"
+spec:
+  rules:
+  - host: cs0.home.org
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: cs0-svc
+            port:
+              number: 80
+  tls:
+  - hosts:
+    - cs0.home.org
+    secretName: cs0.home.org
