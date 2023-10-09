@@ -1,0 +1,16 @@
+--- 
+apiVersion: v1 
+kind: PersistentVolumeClaim
+metadata: 
+  name: pvc-code-cs0
+  namespace: code
+spec: 
+  accessModes: 
+  - ReadWriteMany
+  storageClassName: local-storage
+  resources:
+    requests:
+      storage: 5Gi
+  selector:
+    matchLabels:
+      volume: pv-code-cs0
