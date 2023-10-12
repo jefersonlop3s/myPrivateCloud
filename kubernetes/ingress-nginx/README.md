@@ -35,6 +35,15 @@ Isto poderia ser feito também após a implantação se preferir, executando o s
 kubectl get Validatingwebhookconfigurations ingress-nginx-admission -o=yaml | yq '.webhooks[].failurePolicy = "Ignore"' | kubectl apply -f -
 ```
 
+Se precisar... siga as instruções para instalação do `yq`:
+```
+sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+
+sudo chmod a+x /usr/local/bin/yq
+
+yq --version
+```
+
 ## Implantação após correções
 Implante com:
 ```
