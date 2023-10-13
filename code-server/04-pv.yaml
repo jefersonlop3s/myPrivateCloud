@@ -8,13 +8,13 @@ metadata:
     volume: pv-code-cs0
 spec:
   capacity:
-    storage: 5Gi
+    storage: 10Gi
   accessModes:
   - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
   storageClassName: local-storage
   local:
-    path: /local-storage/code-server/cs0
+    path: /home/storage/local-storage/code-server/cs0
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -22,4 +22,4 @@ spec:
         - key: kubernetes.io/hostname
           operator: In
           values:
-          - myAffinityNode # kubernetes node name
+          - srv01 # kubernetes node name

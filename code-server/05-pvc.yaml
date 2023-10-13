@@ -10,7 +10,7 @@ spec:
   storageClassName: local-storage
   resources:
     requests:
-      storage: 5Gi
+      storage: 10Gi
   selector:
     matchLabels:
       volume: pv-code-cs0
