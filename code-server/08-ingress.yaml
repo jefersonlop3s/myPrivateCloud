@@ -7,10 +7,11 @@ metadata:
   annotations:
     # kubernetes.io/ingress.class: traefik # the annotation is deprecated
     # spec.ingressClassName: traefik
-    kubernetes.io/ingress.class: nginx
+    #kubernetes.io/ingress.class: nginx
     cert-manager.io/cluster-issuer: selfsigned
     traefik.ingress.kubernetes.io/router.tls: "true"
 spec:
+  ingressClassName: nginx
   rules:
   - host: cs0.lclhome.org
     http:
