@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  namespace: essentials
+spec:
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - name: postgres
+        imagePullPolicy: "IfNotPresent"
+        image: postgres:16.0-alpine
+        resources:
+          limits:
+            memory: "2048Mi"
+            cpu: "2"
+          requests:
+            cpu: "1"
+        env: 
+          - name: POSTGRES_DB
+            valueFrom:
+              secretKeyRef:
+                name: essentials-pgsql-secret
+                key: dbname
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                name: essentials-pgsql-secret
+                key: username
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: essentials-pgsql-secret
+                key: password
+        ports:
+        - containerPort: 5432
+        volumeMounts:
+          - mountPath: /var/lib/postgresql/data
+            name: pgsql
+      volumes:
+        - name: pgsql
+          persistentVolumeClaim:
+            claimName: pvc-pgsql
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              preference:
+                matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values:
+                  - srv01
