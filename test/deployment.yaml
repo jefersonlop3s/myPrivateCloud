@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+  namespace: test
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      dnsPolicy: "None"
+      dnsConfig:
+        nameservers:
+          - 192.168.5.1 # Your LAN DNS
+          - 10.43.0.10 # Cluster DNS
+        searches:
+          - lclhome.org # my fake domain
+      containers:
+      - name: nginx
+        image: nginx:1.25.2-alpine-slim
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 80
