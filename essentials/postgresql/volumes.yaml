@@ -1,0 +1,36 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-pgs
+  namespace: essentials
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+  - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage
+  local:
+    path: /home/storage/local-storage/essentials/postgres
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - srv01
+--- 
+apiVersion: v1 
+kind: PersistentVolumeClaim
+metadata: 
+  name: pvc-pgsql
+  namespace: devops
+spec: 
+  accessModes: 
+  - ReadWriteMany
+  storageClassName: local-storage
+  resources:
+    requests:
+      storage: 10Gi 
