@@ -4,8 +4,7 @@ Este documento cobre a instalação do MetalLB em um cluster K3s existente, do q
 
 Se você ainda não implantou seu cluster k3s, indico olhar a documentação oficial para uma instalação limpa sem a necessidade de que se realize estes passos, pois, todos eles podem ser evitados simplesmente implementando o k3s desabilitando tanto o traefik, como o servicelb na implantação:
 
-1. `curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC=”server --disable traefik 
---disable servicelb” sh -`
+1. `curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC=”server --disable traefik --disable servicelb” sh -`
 
 Se você está implantando agora e seguiu com o comando demonstrado, desabilitando tanto o traefik como o servicelb, você pode pular o **Passo 1, desabilitando o servicelb** e ir diretamente para o **Passo 2, implantando o MetalLB**.
 ## MetalLB
