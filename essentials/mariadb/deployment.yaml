@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mariadb
+  namespace: essentials
+spec:
+  selector:
+    matchLabels:
+      app: mariadb
+  template:
+    metadata:
+      labels:
+        app: mariadb
+    spec:
+      containers:
+      - name: madiadb
+        imagePullPolicy: "IfNotPresent"
+        image: mariadb:11.1.2
+        resources:
+          limits:
+            memory: "2048Mi"
+            cpu: "2"
+          requests:
+            cpu: "1"
+        env: 
+          - name: MYSQL_DATABASE
+            valueFrom:
+              secretKeyRef:
+                name: essentials-mariadb-secret
+                key: dbname
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: essentials-mariadb-secret
+                key: password
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+          - mountPath: /var/lib/mysql
+            name: mariadb
+      volumes:
+        - name: mariadb
+          persistentVolumeClaim:
+            claimName: pvc-mariadb
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              preference:
+                matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values:
+                  - srv01
