@@ -28,13 +28,10 @@ spec:
           type: Unconfined
       containers:
       - name: freeipa
-        #image: freeipa/freeipa-server:rocky-9-4.10.1
         image: freeipa/freeipa-server:fedora-38-4.10.2
         imagePullPolicy: IfNotPresent
         securityContext:
           privileged: true
-        #tty: true
-        #stdin: true
         env:
           - name: IPA_SERVER_HOSTNAME
             value: freeipa.lclhome.org
@@ -83,8 +80,6 @@ spec:
           - containerPort: 636
             protocol: TCP
             name: ldaps
-        #command:
-        #  - ipa-server-install 
         args: 
           - -U 
           - --domain=lclhome.org
@@ -106,9 +101,6 @@ spec:
           - name: localtime
             mountPath: /etc/localtime
             readOnly: true
-          #- name: cgroup
-          #  mountPath: /sys/fs/group
-#         #   readOnly: true
       volumes:
         - name: vol-freeipa
           persistentVolumeClaim:
@@ -117,11 +109,6 @@ spec:
           hostPath:
             path: /etc/localtime
             type: File
-        #- name: cgroup
-        #  hostPath:
-        #    path: /sys/fs/group
-        #    type: Directory
-
       # This is optional or not necessary
       affinity:
           nodeAffinity:
