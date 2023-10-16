@@ -1,0 +1,135 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: freeipa
+  name: freeipa
+  namespace: freeipa
+spec:
+  selector:
+    matchLabels:
+      app: freeipa
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: freeipa
+    spec:
+      dnsPolicy: "None"
+      dnsConfig:
+        nameservers:
+          - 192.168.5.1 # Your LAN DNS
+          - 1.1.1.1
+          - 10.43.0.10 # Cluster DNS
+        searches:
+          - lclhome.org # my fake domain
+      securityContext:
+        seccompProfile:
+          type: Unconfined
+      containers:
+      - name: freeipa
+        #image: freeipa/freeipa-server:rocky-9-4.10.1
+        image: freeipa/freeipa-server:fedora-38-4.10.2
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          privileged: true
+        #tty: true
+        #stdin: true
+        env:
+          - name: IPA_SERVER_HOSTNAME
+            value: freeipa.lclhome.org
+          - name: IPA_SERVER_IP
+            value: "192.168.5.213"
+          - name: ADMIN_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: freeipa-secret
+                key: admin-password
+        resources:
+          requests:
+            memory: "512"
+            cpu: "0.5"
+          limits:
+            memory: "2048Mi"
+            cpu: "2"
+        ports: 
+          - containerPort: 53
+            protocol: TCP
+            name: dns        
+          - containerPort: 53
+            protocol: UDP       
+          - containerPort: 80
+            protocol: TCP
+            name: http        
+          - containerPort: 88
+            protocol: TCP
+            name: kerberus        
+          - containerPort: 88
+            protocol: UDP
+          - containerPort: 123
+            protocol: UDP
+            name: ntp
+          - containerPort: 389
+            protocol: TCP
+            name: ldap
+          - containerPort: 443
+            protocol: TCP
+            name: https
+          - containerPort: 464
+            protocol: TCP
+            name: kerberus-pass
+          - containerPort: 464
+            protocol: UDP
+          - containerPort: 636
+            protocol: TCP
+            name: ldaps
+        #command:
+        #  - ipa-server-install 
+        args: 
+          - -U 
+          - --domain=lclhome.org
+          - --realm=lclhome.org
+          - --admin-password=$(ADMIN_PASSWORD)
+          - --http-pin=$(ADMIN_PASSWORD)
+          - --dirsrv-pin=$(ADMIN_PASSWORD)
+          - --ds-password=$(ADMIN_PASSWORD)
+          - --no-dnssec-validation
+          - --no-host-dns
+          - --setup-dns
+          - --auto-forwarders
+          - --allow-zone-overlap
+          - --unattended
+          - --no-ntp        
+        volumeMounts:
+          - name: vol-freeipa
+            mountPath: /data
+          - name: localtime
+            mountPath: /etc/localtime
+            readOnly: true
+          #- name: cgroup
+          #  mountPath: /sys/fs/group
+#         #   readOnly: true
+      volumes:
+        - name: vol-freeipa
+          persistentVolumeClaim:
+            claimName: pvc-freeipa
+        - name: localtime
+          hostPath:
+            path: /etc/localtime
+            type: File
+        #- name: cgroup
+        #  hostPath:
+        #    path: /sys/fs/group
+        #    type: Directory
+
+      # This is optional or not necessary
+      affinity:
+          nodeAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+              - weight: 100
+                preference:
+                  matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: In
+                    values:
+                    - srv01 # kubernetes node name
