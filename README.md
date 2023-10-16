@@ -50,6 +50,8 @@ Ideias para uma nuvem pessoal familiar para armazenamento de documentos, fotos, 
 ### Gitea
 - https://about.gitea.com/
 - Docker Image: https://hub.docker.com/r/gitea/gitea
+- https://docs.gitea.com/installation/install-on-kubernetes
+- https://docs.gitea.com/installation/install-with-docker
 
 ### Mattermost
 - https://mattermost.com/
@@ -62,3 +64,9 @@ Ideias para uma nuvem pessoal familiar para armazenamento de documentos, fotos, 
 ### Casa OS, uma distro que vale a pena dar uma espiada para uma avaliação
 - https://casaos.io/
 
+### Semaphore
+- https://docs.ansible-semaphore.com/administration-guide/installation#docker
+- https://www.ansible-semaphore.com/
+
+### Teleport
+- https://goteleport.com/
