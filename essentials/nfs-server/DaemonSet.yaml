@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: nfs-server
+  namespace: essentials
+spec:
+  selector:
+    matchLabels:
+      app: nfs-server
+  template:
+    metadata:
+      labels:
+        app: nfs-server
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: disk-1
+                operator: In
+                values:
+                - disk-1
+      containers:
+      - name: nfs-server
+        image: jefersonlopes/nfs-server:0.0.1
+        ports:
+        - name: nfs
+          containerPort: 2049
+        securityContext:
+          capabilities:
+            add:
+              - SYS_ADMIN
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        volumeMounts:
+        - name: nfs-pv
+          mountPath: /exports
+      volumes:
+      - name: nfs-pv
+        persistentVolumeClaim:
+          claimName: nfs-pvc
