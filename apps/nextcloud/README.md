@@ -26,26 +26,31 @@ E enfim, execute `docker-compose up -d` na raís deste diretório/pasta após cl
 
 Inicie a implantação utilizando-se do endereço IP de seu host.
 
-## Evitando possíveis problemas de permissionamento e acesso:
+## Evitando possíveis problemas:
+### Permissões de acesso Apache
+Antes de iniciar a implantação, dê permissões totais ao diretório de implantação, não se preocupe, pois, a própria implantação regulará as permissões durante e após o processo:
+`sudo chmod 777 -R /opt/nextcloud/{html,data}/ `
 
 Sempre olhe os logs se o container não subir. 
 
 `docker logs -f nextcloud-app-1`
 
-Porém, após implantar, utilize `docker-compose down` para derrubar o ambiente, apagando os containers e siga o procedimento abaixo.
+Se houver algum inconveniente, após implantar, utilize `docker-compose down` para derrubar o ambiente, apagando os containers e siga o procedimento abaixo para caso de permissão negada, porém o procedimento acima deverá ter resolvido sem delongas e isso não acontecerá.. acredito... entao...
 
-
-Se ocorrer a excessão de Permission denied:
+... Se ocorrer a excessão de Permission denied:
 `/entrypoint.sh: 137: cannot create /var/www/html/nextcloud-init-sync.lock: Permission denied`
 
-Neste momento não há dados importantes nos diretórios, então, você poderá remover todo o conteúdo desta primeira implantação com `sudo rm -rf /opt/nextcloud/html/* && sudo rm -rf /opt/nextcloud/data/*`.
+... prossiga com a remoção de todo o conteúdo desta primeira implantação com `sudo rm -rf /opt/nextcloud/html/* && sudo rm -rf /opt/nextcloud/data/*`.
 
-Apõs isso, para evitar o problema, sera necessário alterar as permissões do diretório contendo os volumes  para 'html' e/ou 'data' com:
+Após isso, para evitar o problema, é necessário alterar as permissões do diretório que contém os volumes  para 'html' e/ou 'data' com:
 `sudo chmod 777 -R /opt/nextcloud/{html,data}/ `
 
 Isso vai permitir que o usuário 'www-data' do serviço apache executando no container do Nextcloud possa realizar qualquer alteração de permissão no diretório do volume durante a operação de implantação.
 
-Execute a implantação novamente com `docker-compose up`. Finalizando, pare novamente a instância removendo os containers com `docker-compose down`, edite a configuração acrescentando a "trusted_domains" em config/config.php no volume `html` com o valor para o domínio e fqdn que definiu para o Nextcloud.
+Execute a implantação novamente com `docker-compose up`. 
+
+### Trusted Domains
+Se ocorrer problemas de acesso via FQDN, finalize novamente a instância removendo os containers com `docker-compose down`, edite a configuração acrescentando a "trusted_domains" em `config/config.php` no volume `html` com o valor para o domínio e fqdn que definiu para o Nextcloud.
 
 Exemplo:
 ```
@@ -56,3 +61,4 @@ Exemplo:
     2 => '192.168.5.120',
   ),
 ```
+Suba o ambiente, `docker-compose up`.
