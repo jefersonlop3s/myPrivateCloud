@@ -23,3 +23,36 @@ Antes de mais nada, você precisará de um banco de dados postgres pronto e func
 
 E enfim, execute `docker-compose up -d` na raís deste diretório/pasta após cloná-lo para seu ambiente.
 
+
+Inicie a implantação utilizando-se do endereço IP de seu host.
+
+## Evitando possíveis problemas de permissionamento e acesso:
+
+Sempre olhe os logs se o container não subir. 
+
+`docker logs -f nextcloud-app-1`
+
+Porém, após implantar, utilize `docker-compose down` para derrubar o ambiente, apagando os containers e siga o procedimento abaixo.
+
+
+Se ocorrer a excessão de Permission denied:
+`/entrypoint.sh: 137: cannot create /var/www/html/nextcloud-init-sync.lock: Permission denied`
+
+Neste momento não há dados importantes nos diretórios, então, você poderá remover todo o conteúdo desta primeira implantação com `sudo rm -rf /opt/nextcloud/html/* && sudo rm -rf /opt/nextcloud/data/*`.
+
+Apõs isso, para evitar o problema, sera necessário alterar as permissões do diretório contendo os volumes  para 'html' e/ou 'data' com:
+`sudo chmod 777 -R /opt/nextcloud/{html,data}/ `
+
+Isso vai permitir que o usuário 'www-data' do serviço apache executando no container do Nextcloud possa realizar qualquer alteração de permissão no diretório do volume durante a operação de implantação.
+
+Execute a implantação novamente com `docker-compose up`. Finalizando, pare novamente a instância removendo os containers com `docker-compose down`, edite a configuração acrescentando a "trusted_domains" em config/config.php no volume `html` com o valor para o domínio e fqdn que definiu para o Nextcloud.
+
+Exemplo:
+```
+  'trusted_domains' =>
+  array (
+    0 => 'nextcloud.lclhome.org',
+    1 => 'lclhome.org ',
+    2 => '192.168.5.120',
+  ),
+```
