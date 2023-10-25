@@ -36,7 +36,7 @@ spec:
           - name: IPA_SERVER_HOSTNAME
             value: freeipa.lclhome.org
           - name: IPA_SERVER_IP
-            value: "192.168.5.213"
+            value: "192.168.5.2"
           - name: ADMIN_PASSWORD
             valueFrom:
               secretKeyRef:
@@ -98,6 +98,16 @@ spec:
         volumeMounts:
           - name: vol-freeipa
             mountPath: /data
+            subPath: data
+          - name: vol-freeipa
+            mountPath: /var/lib/ipa
+            subPath: ipa
+          - name: vol-freeipa
+            mountPath: /tmp
+            subPath: tmp
+          #- name: vol-freeipa
+          #  mountPath: /etc/httpd
+          #  subPath: httpd
           - name: localtime
             mountPath: /etc/localtime
             readOnly: true
