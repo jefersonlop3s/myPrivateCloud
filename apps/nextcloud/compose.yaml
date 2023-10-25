@@ -3,6 +3,8 @@ version: "3"
 services:
   app:
     image: nextcloud:latest
+    env_file:
+      - secret.env
     restart: always
     networks:
       nextcloud-net:
@@ -18,7 +20,7 @@ services:
       - /opt/nextcloud/html:/var/www/html:rw
       - /opt/nextcloud/data:/srv/nextcloud/data:rw
     environment:
-      - POSTGRES_HOST=192.168.5.211}
+      - POSTGRES_HOST=${POSTGRES_HOST}
       - POSTGRES_DB=${POSTGRES_DB}                              # Banco de dados para o Nextcloud, poderá ser outro de sua preferência
       - POSTGRES_USER=${POSTGRES_USER}                          # Usuário do banco de dados Nextcloud
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}                  # Senha para o usuário nextcloud_user
@@ -27,8 +29,6 @@ services:
       - NEXTCLOUD_TRUSTED_DOMAINS=${NEXTCLOUD_TRUSTED_DOMAINS}  # Defina um domínio
       - SKIP_DOMAIN_VALIDATION=true                             # Evita a validação de domínio
       - VIRTUAL_HOST=192.168.5.120                              # Defina com o IP do Host 
-    secrets:
-      - secrets-file
   nginx:
     image: nginx:1.25.2-alpine
     container_name: nginx
@@ -48,9 +48,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./certs:/etc/tls
-secrets:
-  secrets-file:
-    file: ./secrets.txt
 networks:
   nextcloud-net:
     driver: bridge
