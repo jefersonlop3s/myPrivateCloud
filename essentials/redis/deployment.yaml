@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  namespace: essentials
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+      - name: redis
+        image: redis:7.2.2-alpine3.18
+        imagePullPolicy: "IfNotPresent"
+        resources:
+          limits:
+            memory: "1024Mi"
+            cpu: "1000m"
+        ports:
+        - name: redis-port
+          containerPort: 6379
+        volumeMounts:
+          - mountPath: /var/lib/redis
+            name: redis-vol
+      volumes:
+        - name: redis-vol
+          emptyDir: {}
