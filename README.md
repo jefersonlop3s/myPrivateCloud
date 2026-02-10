@@ -1,72 +1,68 @@
-# myPrivateCloud
-Ideias para uma nuvem pessoal familiar para armazenamento de documentos, fotos, videos e ambiente de estudos e desenvolvimento...
+# ☁️ myPrivateCloud (Legacy v1.0.0)
 
-## Hardware
-- NAS Server Raspberry Pi 4
-- Morefine/Beelink - MiniPC
+![Status](https://img.shields.io/badge/Status-Archived-red)
+![Version](https://img.shields.io/badge/Release-v1.0.0-blue)
+![Tech](https://img.shields.io/badge/Infrastructure-Kubernetes%20%7C%20Vagrant%20%7C%20Docker-green)
 
-## Infraestrutura/Plataforma para Homologação
-### Linux KVM (VirtManager)
-### Docker/Podman/Containerd
-### Vagrant
-- https://developer.hashicorp.com/vagrant
+Este repositório contém os manifestos de infraestrutura, configurações de orquestração e automação de uma Nuvem Privada (HomeLab). Este projeto serviu como laboratório para estudos avançados em **Kubernetes**, **Identity Management** e **Armazenamento Distribuído**.
 
-## Infraestrutura/Plataforma para Produção
-### Linux KVM (VirtManager/QEmu/KubeVirt)
-### Kubernetes
-- https://kubernetes.io/
+> ⚠️ **Nota:** Este repositório é um snapshot de uma implementação estável e foi arquivado para fins de portfólio e consulta histórica.
 
-## Apps, Softwares and Docker Images
-### OpenMediaVault: 
-- https://www.openmediavault.org/
-### Code-server
--  https://hub.docker.com/r/linuxserver/code-server 
+---
 
-### NextCloud:
-- https://nextcloud.com/
-- Docker Image: https://hub.docker.com/_/nextcloud
+## 🏛️ Arquitetura do Lab
 
-## DAVx5
-- https://www.davx5.com/
+A infraestrutura foi desenhada para modularidade, separando a camada de orquestração (Kubernetes) dos serviços essenciais e aplicações finais.
 
+### 1. Provisionamento & Camada Base
+* **Vagrant:** Ambiente de virtualização reproduzível (`/vagrant`) utilizado para subir o cluster e nós de teste.
+* **Storage (NFS):** Implementação de `NFS-Server` via DaemonSet no Kubernetes para persistência de dados (PV/PVCs).
 
-### Piwigo: 
-- https://piwigo.org/
-- Docker Image: https://hub.docker.com/r/linuxserver/piwigo
+### 2. Kubernetes Core (Cluster System)
+Componentes fundamentais para o funcionamento da rede e segurança do cluster:
+* **Ingress Controller:** Nginx (v1.11.12 e v1.9.3) para roteamento de tráfego HTTP/HTTPS.
+* **Load Balancer:** MetalLB (v0.13.11) para atribuição de IPs reais (Layer 2) aos serviços do cluster.
+* **Cert-Manager:** Gestão automatizada de certificados (Self-Signed).
 
-### AdGuard: 
-- https://adguard.com/pt_br/welcome.html
-- Docker Image: https://hub.docker.com/r/adguard/adguardhome
+### 3. Essentials (Middleware & Backing Services)
+Serviços de suporte que sustentam as aplicações:
+* **Identity Management:** FreeIPA containerizado para gestão centralizada de usuários e políticas.
+* **Databases:**
+    * `MariaDB` & `PostgreSQL`: Bancos relacionais com persistência configurada via Secrets e PVCs.
+    * `Redis`: Camada de cache.
 
-### Pi-hole:
-- https://pi-hole.net/
-- Docker Image: https://hub.docker.com/r/pihole/pihole
+### 4. Aplicações (End-User)
+* **Code-Server:** Ambiente de desenvolvimento (IDE) remoto rodando sobre Kubernetes.
+* **Nextcloud:** Nuvem de arquivos e colaboração (Implementação híbrida via Docker Compose + Nginx Proxy).
+* **Nginx-Test:** Pods para validação de rotas de Ingress e Troubleshooting.
 
+---
 
-### MariaDb: 
-- https://mariadb.org/
-- MariaDb: https://hub.docker.com/_/mariadb
+## 📂 Estrutura do Repositório
 
-### Gitea
-- https://about.gitea.com/
-- Docker Image: https://hub.docker.com/r/gitea/gitea
-- https://docs.gitea.com/installation/install-on-kubernetes
-- https://docs.gitea.com/installation/install-with-docker
+```text
+.
+├── apps/               # Aplicações finais (Manifestos K8s & Compose)
+│   ├── code-server     # IDE Remota
+│   ├── nextcloud       # File Storage
+│   └── ...
+├── essentials/         # Serviços de infraestrutura (DBs, Auth, Storage)
+│   ├── freeipa
+│   ├── mariadb / postgresql / redis
+│   └── nfs-server
+├── kubernetes/         # Componentes do Cluster (Ingress, MetalLB)
+└── vagrant/            # IaaC para provisionamento de VMs
+```
+---
 
-### Mattermost
-- https://mattermost.com/
-- Docker Image: https://hub.docker.com/r/mattermost/mattermost-team-edition
+## 🚀 Destaques Técnicos
 
-### HomeAssitant: 
-- https://www.home-assistant.io/
-- Docker Image: https://hub.docker.com/r/homeassistant/home-assistant
+Segurança: Uso extensivo de Secret e ConfigMap para desacoplar configurações sensíveis.
 
-### Casa OS, uma distro que vale a pena dar uma espiada para uma avaliação
-- https://casaos.io/
+Persistência: Definição clara de PersistentVolume (PV) e PersistentVolumeClaim (PVC) para todos os serviços stateful.
 
-### Semaphore
-- https://docs.ansible-semaphore.com/administration-guide/installation#docker
-- https://www.ansible-semaphore.com/
+Networking: Configuração avançada de Ingress e MetalLB IPAddressPools.
 
-### Teleport
-- https://goteleport.com/
+Desenvolvido por Jeferson Lopes, Software Engineer | DevOps | Enthusiast
+
+---
